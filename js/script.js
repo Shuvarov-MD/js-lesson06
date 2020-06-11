@@ -12,27 +12,42 @@ function createNumber() {
 
 //Функция запуска игры
 function runGame() {
-  let number = createNumber();
+  let number = createNumber(),
+    attempt = 10;
 
   function checkAnswer() {
+    if (attempt === 0) {
+      let result = confirm('Попытки закончились, хотите сыграть еще?');
+      if (result) {
+        runGame()();
+      }
+      return;
+    }
+
     let userAnswer = prompt('Угадай число от 1 до 100:', '');
 
     if (userAnswer === null) {
       return alert('Игра окончена');
-    } else if(!isNumber(userAnswer)) {
+    } else if (!isNumber(userAnswer)) {
       alert('Введи число!');
       checkAnswer();
     } else if (+userAnswer < 1 || +userAnswer > 100) {
       alert('Введи число от 1 до 100');
       checkAnswer();
     } else if (+userAnswer > number) {
-      alert('Загаданное число меньше');
+      attempt--;
+      alert('Загаданное число меньше, осталось попыток ' + attempt);
       checkAnswer();
     } else if (+userAnswer < number) {
-      alert('Загаданное число больше');
+      attempt--;
+      alert('Загаданное число больше, осталось попыток ' + attempt);
       checkAnswer();
-    } else if(+userAnswer === number) {
-      return alert('Вы победили!');
+    } else if (+userAnswer === number) {
+      let result = confirm('Поздравляю, Вы угадали!!! Хотели бы сыграть еще?');
+      if (result) {
+        runGame()();
+      }
+      return;
     }
   }
 
